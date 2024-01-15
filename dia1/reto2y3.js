@@ -47,7 +47,6 @@ rl.question('Nombre?', (name) => {
                             console.error(err);
                             return;
                         }
-                        // console.log(data);
                     })
                 }    
             })
