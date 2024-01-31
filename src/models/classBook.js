@@ -9,4 +9,4 @@ class Book{
     }
 }
 
-module.export = Book;
+module.exports = Book;

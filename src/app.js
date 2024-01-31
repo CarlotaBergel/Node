@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const bookRouter = require("./routers/book.routers");
+const bookRouter = require("./routers/books.routers");
 const errorHandling = require("./error/errorHandling");
 
 const app = express();

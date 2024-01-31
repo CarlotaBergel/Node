@@ -1,51 +1,56 @@
-let books = require("../models/classBook");
 
-books = null;
+const book = require("../models/classBook");
+// const app = express();
 
-// let books = new Book("La sirenita","Ficcion", "Pepa Juarez", 17, "https://es.web.img2.acsta.net/medias/nmedia/18/80/56/45/19549127.jpg");
+var books = [
+    new book("La sirenita", "Infantil", "Josefina", 18,"https://acortar.link/4A8ivP",1),
+    new book("La cenicienta", "Infantil","Pepe",21,"https://acortar.link/2Vjz2t",2),
+    new book("Un cuento perfecto", "Juvenil","Elisabett",18,"https://acortar.link/HfXpo2",3),
+    new book("Todo lo que nunca fuimos", "Juvenil","Alice",15,"https://acortar.link/iQ8TkE",4),
+]
 
-function getBook(req, res){
+function getBooks(req, res){
     let respuesta;
-    if(books != null){
-        respuesta= usuario;
+    let bookFiltro;
+    if(req.query.id_book){
+        bookFiltro = books.filter(b => b.id_book == req.query.id_book);
+        respuesta = books;        
     }else{
-        respuesta = {error: true, codigo:200, mensaje: "usuario no existe"};
+        respuesta = "Petición mal formulada";
     }
     res.send(respuesta);
 }
 
-function createBook(req, res){
+function postBooks(req, res){
+    let respuesta = new book(req.body.title, req.body.type, req.body.author, req.body.price, req.body.photo, req.body.id_book)
+    res.status(200).send(respuesta);
+}
+
+function putBooks(req, res){
     let respuesta;
-    if(books === null){
-        books = new Book (req.body.title, req.body.type, req.body.author, req.body.price, req.body.photo);
-        respuesta = {error:false, codigo:200, mensaje:"Libro creado", res: books}
+    if(req.body.id_book && books.findIndex(b => b.id_book == req.body.id_book) >= 0){
+        let libro = new book(req.body.title, req.body.type, req.body.author, req.body.price, req.body.photo, req.body.id_book);
+        books[books.findIndex(b => b.id_book == req.body.id_book)] = libro;
+        respuesta = "Libro editado";
     }else{
-        respuesta = {error:false, codigo:200, mensaje:"El libro ya existe", resultado: null};
+        respuesta = "Libro no encontrado";
     }
-    res.send(respuesta);
+    res.status(200).send(respuesta);
 }
 
-function updateBook(req, res){
+function deleteBooks(req, res){
     let respuesta;
-    if(books != null){
-        books.title = req.body.title;
-        books.id_book = req.body.id_book;
-        respuesta = {error: false, codigo:200, mensaje:"Libro actualizado", resultado:books};
+    if(req.body.id_book && books.findIndex(b => b.id_book == req.body.id_book) >= 0){
+        books.splice(books.findIndex(b => b.id_book == req.body.id_book), 1);
+        respuesta = "Libro eliminado";
     }else{
-        respuesta = { error: true, codigo:200, mensaje:"El libro no existe", resultado:books};
-    }        
-    res.send(respuesta);
-}
-
-function deleteBook(req, res){
-    let respuesta;
-    if(books != null){
-        books = null;
-        respuesta = {error: false, codigo:200, mensaje:"Libro borrado", resultado:books}
-    } else{
-        respuesta = {error: true, codigo:200, mensaje:"El libro no existe", resultado:books}
+        respuesta = "Libro no encontrado";
     }
-    res.send(respuesta);
+    res.status(200).send(respuesta);
 }
 
-module.exports = {getBook, createBook, updateBook, deleteBook};
+
+// put post y delete todo por body para que no se vea en el enlace
+
+
+module.exports = {getBooks, postBooks, putBooks, deleteBooks};

@@ -2,10 +2,10 @@ const {Router} = require("express");
 const router = Router();
 const booksCtrl = require("../controller/books.controller");
 
-router.get("/book", booksCtrl.getBook);
-router.post("/book", booksCtrl.createBook);
-router.put("/book", booksCtrl.updateBook);
-router.delete("/book", booksCtrl.deleteBook);
+router.get("/books", booksCtrl.getBooks);
+router.post("/books", booksCtrl.postBooks);
+router.put("/books", booksCtrl.putBooks);
+router.delete("/books", booksCtrl.deleteBooks);
 
 
 module.exports = router;
